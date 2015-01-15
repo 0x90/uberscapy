@@ -33,21 +33,23 @@ Identify ports
     prn=lambda x: x.sprintf("%IP.src%:%TCP.sport% -> %IP.dst%:%TCP.dport%  %2s,TCP.flags% : %TCP.payload%"))
 ```
  
-Ping:
+TCP ping:
 ```python
 	srloop(IP(dst="www.google.com/30")/TCP())
 ```
-	//con icmp bloqueado
-	```python
-	ans,unans=sr( IP(dst="192.168.1.*")/TCP(dport=80,flags="S") )
+
+TCP ping:
+```python
+    ans,unans=sr( IP(dst="192.168.1.*")/TCP(dport=80,flags="S") )
 	ans.summary( lambda(s,r) : r.sprintf("%IP.src% conteasta") )
-    ```
+```
     
-	//Udp Ping
-	```python
-	ans,unans=sr( IP(dst="192.168.1.1-10")/UDP(dport=0) )
+UDP ping
+```python
+    ans,unans=sr( IP(dst="192.168.1.1-10")/UDP(dport=0) )
 	ans.summary( lambda(s,r) : r.sprintf("%IP.src% contesta en udp") )
-    ```
+```
+
 ARP ping manual:
 ```python
 	ans,unans=srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst="192.168.1.0/24"),timeout=2)
