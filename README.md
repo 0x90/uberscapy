@@ -16,17 +16,16 @@ Official Scapy usage tutorial is located [here](http://www.secdev.org/projects/s
 
 Sniffing:
  
-Snifear en interfaz eth0:
-	
-	```python
+Sniffing on eth0:
+```python
 			sniff(iface="eth0",prn=lambda x: x.summary())
 			sniff(iface="eth0",prn=lambda x: x.show())
-	```
+```
 	
-filtrando y con formato. Solo ips.
-	```python
+Formated sniff output
+```python
 			pkts = sniff(prn=lambda x:x.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"))
-	```
+```
 	
 identificando puertos
 	```python
