@@ -12,9 +12,9 @@ examples - examples for official Scapy usage and more
 
 Official Scapy usage tutorial is located [here](http://www.secdev.org/projects/scapy/doc/usage.html)
 
-## One line examples
+## Simple examples
 
-Sniffing:
+### Sniff
  
 Sniffing on eth0:
 ```python
@@ -33,6 +33,8 @@ Identify ports
     prn=lambda x: x.sprintf("%IP.src%:%TCP.sport% -> %IP.dst%:%TCP.dport%  %2s,TCP.flags% : %TCP.payload%"))
 ```
  
+### Ping
+
 TCP ping:
 ```python
 	srloop(IP(dst="www.google.com/30")/TCP())
@@ -66,14 +68,13 @@ Traceroute:
 	traceroute(["www.google.com","www.ust.cl","www.terra.cl","www.microsoft.com"],maxttl=20)
 	result, unans=_
 	result.show()
-	//graficar
+	# save output
 	result.graph(type="ps", target="|lp")
 	result.graph(target="> grafico.svg")
 ```
 
-traceroute avanzado:
+Advaced traceroute + DNS
 ```python
-	//saltandose cortafuegos-por el dns
 	ans,unans=sr(IP(dst="terra.cl",ttl=(1,10))/TCP(dport=53,flags="S"))
 	ans.summary( lambda(s,r) : r.sprintf("%IP.src%\t{ICMP:%ICMP.type%}\t{TCP:%TCP.flags%}"))
 ```
@@ -95,8 +96,10 @@ OS fingerprint:
 ```python
 	ans,unans=srloop(IP(dst="192.168.1.1")/TCP(dport=80,flags="S"))
 ```
-un ataquesillo:
-	paquete mal formado:
+
+###	Attacks
+	
+Malformed packets:
 	
 ```python
     send(IP(dst="192.168.1.1", ihl=2, version=3)/ICMP())
@@ -112,13 +115,12 @@ Land attack (windows):
     send(IP(src=target,dst=target)/TCP(sport=135,dport=135))
 ```
  
-verificandos DHCP de la red:
+DHCP discovery:
 ```python
 	conf.checkIPaddr = False
 	fam,hw = get_if_raw_hwaddr(conf.iface)
 	dhcp_discover = Ether(dst="ff:ff:ff:ff:ff:ff")/IP(src="0.0.0.0",dst="255.255.255.255")/UDP(sport=68,dport=67)/BOOTP(chaddr=hw)/DHCP(options=[("message-type","discover"),"end"])
 	ans, unans = srp(dhcp_discover, multi=True)
-	//mostando
 	ans.display()
 ```
 
