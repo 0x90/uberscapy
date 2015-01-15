@@ -29,7 +29,8 @@ Formated sniff output
 	
 Identify ports
 ```python
-    a=sniff(filter="tcp and ( port 25 or port 110 )",prn=lambda x: x.sprintf("%IP.src%:%TCP.sport% -> %IP.dst%:%TCP.dport%  %2s,TCP.flags% : %TCP.payload%"))
+    a=sniff(filter="tcp and ( port 25 or port 110 )",
+    prn=lambda x: x.sprintf("%IP.src%:%TCP.sport% -> %IP.dst%:%TCP.dport%  %2s,TCP.flags% : %TCP.payload%"))
 ```
  
 Ping:
@@ -47,16 +48,16 @@ Ping:
 	ans,unans=sr( IP(dst="192.168.1.1-10")/UDP(dport=0) )
 	ans.summary( lambda(s,r) : r.sprintf("%IP.src% contesta en udp") )
     ```
-Arping:
+ARP ping manual:
 ```python
 	ans,unans=srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst="192.168.1.0/24"),timeout=2)
 	ans.summary(lambda (s,r): r.sprintf("%Ether.src% %ARP.psrc%") )
 ```
 
-	//normal
-	```python
+ARP ping built in:
+```python
 	arping("192.168.1.1")
-    ```
+```
     
 Traceroute:
 ```python
@@ -68,25 +69,23 @@ Traceroute:
 	result.graph(target="> grafico.svg")
 ```
 
-tarceroute avanzado:
+traceroute avanzado:
 ```python
 	//saltandose cortafuegos-por el dns
 	ans,unans=sr(IP(dst="terra.cl",ttl=(1,10))/TCP(dport=53,flags="S"))
 	ans.summary( lambda(s,r) : r.sprintf("%IP.src%\t{ICMP:%ICMP.type%}\t{TCP:%TCP.flags%}"))
 ```
 
-Graficar tracert:
+Dump traceroute output:
 ```python
 	res,unans = traceroute(["www.ust.cl","www.santotomas.cl"],dport=[80,443],maxttl=20,retry=-2)
-	//graficar
 	res.graph(type="ps", target="|lp")
 	res.graph(target="> grafico.svg")
 ```
 
-scanner de puertos:
+Port scanner:
 ```python
 	res,unans = sr( IP(dst="target")/TCP(flags="S", dport=(1,1024)) )
-	//visualizando.
 	res.nsummary( lfilter=lambda (s,r): (r.haslayer(TCP) and (r.getlayer(TCP).flags & 2)) )
 ```
 
